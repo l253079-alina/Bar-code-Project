@@ -6,8 +6,6 @@
 
 class QLabel;
 class QLineEdit;
-class QPushButton;
-class CameraScanner;
 
 class MainWindow : public QMainWindow {
 public:
@@ -18,8 +16,6 @@ private:
     QLabel* resultLabel = nullptr;
     QLabel* barcodeView = nullptr;
     QLineEdit* numberEdit = nullptr;
-    QPushButton* cameraBtn = nullptr;
-    CameraScanner* scanner = nullptr;
 
     QString lastNumber;
     QImage generated;
@@ -28,8 +24,6 @@ private:
     void showGenerated(const QString& n);
     void showResult(const QString& text);
     void openFile();
-    void toggleCamera();
     void generate();
     void saveBarcode();
 };
-
