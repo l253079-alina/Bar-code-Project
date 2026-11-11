@@ -1,8 +1,6 @@
-
 #include "mainwindow.h"
 
 #include "barcodeutils.h"
-#include "camerascanner.h"
 
 #include <QApplication>
 #include <QClipboard>
@@ -21,13 +19,12 @@ MainWindow::MainWindow()
 {
     setWindowTitle("Barcode <-> 6-digit number");
 
-    preview = new QLabel("Open an image or start the camera");
+    preview = new QLabel("Open an image to decode its barcode");
     preview->setAlignment(Qt::AlignCenter);
     preview->setMinimumSize(520, 380);
     preview->setFrameShape(QFrame::StyledPanel);
 
     auto* openBtn = new QPushButton("Open image file...");
-    cameraBtn = new QPushButton("Start camera");
 
     resultLabel = new QLabel("Result: -");
     resultLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
@@ -49,7 +46,6 @@ MainWindow::MainWindow()
 
     auto* row1 = new QHBoxLayout;
     row1->addWidget(openBtn);
-    row1->addWidget(cameraBtn);
 
     auto* row2 = new QHBoxLayout;
     row2->addWidget(numberEdit);
@@ -68,17 +64,7 @@ MainWindow::MainWindow()
     central->setLayout(layout);
     setCentralWidget(central);
 
-
-    scanner = new CameraScanner(this);
-    connect(scanner, &CameraScanner::frameReady, this, [this](const QImage& img) { showImage(img); });
-    connect(scanner, &CameraScanner::barcodeFound, this, [this](const QString& t) { showResult(t); });
-    connect(scanner, &CameraScanner::errorOccurred, this,
-        [this](const QString& m) { QMessageBox::warning(this, "Camera", m); });
-    connect(scanner, &CameraScanner::runningChanged, this,
-        [this](bool r) { cameraBtn->setText(r ? "Stop camera" : "Start camera"); });
-
     connect(openBtn, &QPushButton::clicked, this, [this] { openFile(); });
-    connect(cameraBtn, &QPushButton::clicked, this, [this] { toggleCamera(); });
     connect(copyBtn, &QPushButton::clicked, this, [this] {
         if (!lastNumber.isEmpty())
             QApplication::clipboard()->setText(lastNumber);
@@ -94,7 +80,6 @@ void MainWindow::showImage(const QImage& img)
         Qt::SmoothTransformation));
 }
 
-
 void MainWindow::showGenerated(const QString& n)
 {
     generated = makeBarcodeImage(n);
@@ -107,8 +92,8 @@ void MainWindow::showGenerated(const QString& n)
 void MainWindow::showResult(const QString& text)
 {
     lastNumber = toSixDigits(text);
-    numberEdit->setText(lastNumber); 
-    showGenerated(lastNumber);         
+    numberEdit->setText(lastNumber);
+    showGenerated(lastNumber);
     resultLabel->setText(QString("Barcode (Code 128): %1   ->   6-digit number: %2")
         .arg(text, lastNumber));
 }
@@ -129,16 +114,6 @@ void MainWindow::openFile()
         showResult(*text);
     else
         resultLabel->setText("No Code 128 barcode found in that image.");
-}
-
-void MainWindow::toggleCamera()
-{
-    if (scanner->isRunning()) {
-        scanner->stop();
-        return;
-    }
-    if (scanner->start())
-        resultLabel->setText("Scanning... hold the barcode flat, fill about half the frame.");
 }
 
 void MainWindow::generate()
