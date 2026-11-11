@@ -1,7 +1,7 @@
-// barcodeUtils.cpp
+
 #include "barcodeUtils.h"
-#include "code128Decoder.h"
-#include "code128Encoder.h"
+#include "code128decoder.h"
+#include "code128encoder.h"
 #include <QPainter>
 #include <QRegularExpression>
 #include <vector>
