@@ -11,7 +11,7 @@ add_executable(barcode_six
     main.cpp
     mainwindow.cpp
     mainwindow.h
-    barcodeutils.cpp
+    barcodeUtils.cpp
     barcodeUtils.h
     code128patterns.h
     code128encoder.h
