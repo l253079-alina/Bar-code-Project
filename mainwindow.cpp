@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 
-#include "barcodeutils.h"
+#include "barcodeUtils.h"
 
 #include <QApplication>
 #include <QClipboard>
