@@ -1,4 +1,4 @@
-// BarcodeUtils.h use this for barcode generating and reading
+
 #pragma once
 
 #include <QImage> 
