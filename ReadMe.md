@@ -10,11 +10,11 @@ Please only touch your own files so we don't end up with messy merge problems.
 
 | Member | Files |
 |---|---|
-| 1 | `code128patterns.h`, `code128encoder.h` |
-| 2 | `code128decoder.h` |
-| 3 | `barcodeUtils.h`, `barcodeUtils.cpp` |
-| 4 | `mainwindow.h`, `mainwindow.cpp` |
-| 5 | `main.cpp`, `CMakeLists.txt`, `README.md`, `.gitignore` |
+| 1 Areesha | `code128patterns.h`, `code128encoder.h` |
+| 2 Abeeha | `code128decoder.h` |
+| 3 Eman | `barcodeUtils.h`, `barcodeUtils.cpp` |
+| 4 Alina | `mainwindow.h`, `mainwindow.cpp` |
+| 5 Sarah | `main.cpp`, `CMakeLists.txt`, `README.md`, `.gitignore` |
 
 ## What each part does
 
