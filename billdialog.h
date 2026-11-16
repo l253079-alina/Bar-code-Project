@@ -1,7 +1,5 @@
 #pragma once
-
 #include "bill.h"
-
 #include <QDialog>
 
 class BillDialog : public QDialog {
