@@ -1,15 +1,11 @@
 #include "billdialog.h"
-
 #include "billformatter.h"
-
 #include <QFontDatabase>
 #include <QPushButton>
 #include <QTextEdit>
 #include <QVBoxLayout>
 
-BillDialog::BillDialog(const Bill& bill, QWidget* parent)
-    : QDialog(parent)
-{
+BillDialog::BillDialog(const Bill& bill, QWidget* parent) : QDialog(parent){
     setWindowTitle("Bill " + bill.billId);
     resize(700, 480);
 
