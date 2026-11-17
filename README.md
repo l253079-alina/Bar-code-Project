@@ -4,7 +4,6 @@ The cashier scans a product barcode with the camera, the product is added to the
 
 ## Who owns which files
 
-Please only change your own files.
 
 | Member | Files |
 |---|---|
