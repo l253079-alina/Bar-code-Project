@@ -1,4 +1,3 @@
-// camerascanner.h - live camera scanning.
 
 #pragma once
 
@@ -17,7 +16,6 @@ public:
 
     bool isRunning() const { return camera != nullptr; }
 
-    // Returns false (and emits errorOccurred) if no camera is available.
     bool start();
     void stop();
 
