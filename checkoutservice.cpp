@@ -4,13 +4,15 @@
 #include "orderconstants.h"
 #include <QDateTime>
 
-CheckoutService::CheckoutService(OrderRepository& orderRepositoryToUse, BillRepository& billRepositoryToUse): orderRepository(orderRepositoryToUse), billRepository(billRepositoryToUse)
+CheckoutService::CheckoutService(OrderRepository& orderRepositoryToUse, BillRepository& billRepositoryToUse, ProductCatalog& productCatalogToUse)
+: orderRepository(orderRepositoryToUse), billRepository(billRepositoryToUse), productCatalog(productCatalogToUse)
 {}
 
-bool CheckoutService::completeCheckout(const vector<OrderItem>& orderItems, const CheckoutDetails& checkoutDetails,
-  Bill& createdBill, QString& problemDescription)
+bool CheckoutService::completeCheckout(const vector<OrderItem>& orderItems, const CheckoutDetails& checkoutDetails, Bill& createdBill, QString& problemDescription)
 {
-    if (orderItems.empty()) {
+    problemDescription.clear();
+    if (orderItems.empty()) 
+    {
         problemDescription = "The order has no products.";
         return false;
     }
@@ -35,9 +37,17 @@ bool CheckoutService::completeCheckout(const vector<OrderItem>& orderItems, cons
         return false;
 
     createdBill = BillCalculator::createBill(order, billRepository.createNextBillId());
-    if (!billRepository.saveBill(createdBill, problemDescription)) {
+    if (!billRepository.saveBill(createdBill, problemDescription)) 
+    {
         problemDescription = "The order was saved but the bill could not be saved. " + problemDescription;
         return false;
+    }
+
+    if (order.status == OrderConstants::statusPaid) 
+    {
+        QString stockProblemDescription;
+        if (!productCatalog.reduceStock(orderItems, stockProblemDescription))
+            problemDescription = "The order and the bill were saved but the stock in Product.txt could not be updated. " + stockProblemDescription;
     }
     return true;
 }
