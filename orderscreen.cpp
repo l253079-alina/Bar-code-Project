@@ -18,7 +18,9 @@
 #include <QTableWidgetItem>
 #include <QVBoxLayout>
 
-OrderScreen::OrderScreen(ProductCatalog& catalog, CheckoutService& checkout, QWidget* parent): QWidget(parent), productCatalog(catalog), checkoutService(checkout){
+OrderScreen::OrderScreen(ProductCatalog& catalog, CheckoutService& checkout, QWidget* parent)
+    : QWidget(parent), productCatalog(catalog), checkoutService(checkout)
+{
     scanPanel = new ScanPanel;
 
     quantitySpinBox = new QDoubleSpinBox;
@@ -73,15 +75,18 @@ OrderScreen::OrderScreen(ProductCatalog& catalog, CheckoutService& checkout, QWi
     refreshTotals();
 }
 
-void OrderScreen::stopScanning(){
+void OrderScreen::stopScanning()
+{
     scanPanel->stopScanning();
 }
 
-void OrderScreen::showMessage(const QString& messageText){
+void OrderScreen::showMessage(const QString& messageText)
+{
     messageLabel->setText(messageText);
 }
 
-void OrderScreen::handleScannedBarcode(const QString& scannedBarcode){
+void OrderScreen::handleScannedBarcode(const QString& scannedBarcode)
+{
     const optional<Product> foundProduct = productCatalog.findByBarcode(scannedBarcode);
     if (!foundProduct.has_value()) {
         showMessage("No product found for barcode " + scannedBarcode);
@@ -102,7 +107,8 @@ void OrderScreen::handleScannedBarcode(const QString& scannedBarcode){
                     .arg(FileFieldFormatter::quantity(requiredQuantity), foundProduct->acronym, foundProduct->name));
 }
 
-void OrderScreen::refreshOrderTable(){
+void OrderScreen::refreshOrderTable()
+{
     const vector<OrderItem>& orderItems = shoppingCart.items();
     orderTable->setRowCount(static_cast<int>(orderItems.size()));
     for (size_t itemIndex = 0; itemIndex < orderItems.size(); ++itemIndex) {
@@ -123,7 +129,8 @@ void OrderScreen::refreshOrderTable(){
     }
 }
 
-void OrderScreen::refreshTotals(){
+void OrderScreen::refreshTotals()
+{
     const BillTotals totals = BillCalculator::calculateTotals(shoppingCart.items());
     totalsLabel->setText(QString("Without tax: %1    Discount: %2    Tax: %3    Payable: PKR %4")
                              .arg(FileFieldFormatter::money(totals.withoutTax),
@@ -132,7 +139,8 @@ void OrderScreen::refreshTotals(){
                                   FileFieldFormatter::money(totals.payable)));
 }
 
-void OrderScreen::showDescription(){
+void OrderScreen::showDescription()
+{
     const int selectedRow = orderTable->currentRow();
     const int itemCount = static_cast<int>(shoppingCart.items().size());
     if (selectedRow >= 0 && selectedRow < itemCount) {
@@ -148,7 +156,8 @@ void OrderScreen::showDescription(){
     QMessageBox::information(this, "Product description", "Select a product in the order or scan one first.");
 }
 
-void OrderScreen::removeSelectedItem(){
+void OrderScreen::removeSelectedItem()
+{
     const int selectedRow = orderTable->currentRow();
     if (selectedRow < 0) {
         showMessage("Select a product in the order to remove it.");
@@ -160,7 +169,8 @@ void OrderScreen::removeSelectedItem(){
     showMessage("Product removed from the order.");
 }
 
-void OrderScreen::clearOrder(){
+void OrderScreen::clearOrder()
+{
     shoppingCart.clear();
     lastScannedProduct.reset();
     refreshOrderTable();
@@ -168,7 +178,8 @@ void OrderScreen::clearOrder(){
     showMessage("The order was cleared.");
 }
 
-void OrderScreen::generateBill(){
+void OrderScreen::generateBill()
+{
     if (shoppingCart.isEmpty()) {
         QMessageBox::warning(this, "Generate bill", "Add at least one product to the order first.");
         return;
@@ -187,6 +198,9 @@ void OrderScreen::generateBill(){
 
     BillDialog billDialog(createdBill, this);
     billDialog.exec();
+
+    if (!problemDescription.isEmpty())
+        QMessageBox::warning(this, "Generate bill", problemDescription);
 
     shoppingCart.clear();
     lastScannedProduct.reset();
