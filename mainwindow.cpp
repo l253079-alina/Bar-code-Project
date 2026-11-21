@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+
 #include "barcodegeneratorscreen.h"
 #include "checkoutservice.h"
 #include "datafolderlocator.h"
@@ -21,7 +22,9 @@
 static const QString cashierRoleName = "Cashier";
 static const QString managerRoleName = "Manager";
 
-MainWindow::MainWindow(const QString& dataFolderToUse): dataFolderPath(dataFolderToUse){
+MainWindow::MainWindow(const QString& dataFolderToUse)
+    : dataFolderPath(dataFolderToUse)
+{
     setWindowTitle("BarcodeSix point of sale");
     resize(1200, 720);
 
@@ -32,14 +35,15 @@ MainWindow::MainWindow(const QString& dataFolderToUse): dataFolderPath(dataFolde
 
 MainWindow::~MainWindow() = default;
 
-void MainWindow::createServices(){
+void MainWindow::createServices()
+{
     const QDir dataFolder(dataFolderPath);
     productRepository = make_unique<FileProductRepository>(dataFolder.filePath("Product.txt"));
     productCatalog = make_unique<ProductCatalog>(*productRepository);
     orderRepository = make_unique<FileOrderRepository>(dataFolder.filePath("Order.txt"),
                                                        dataFolder.filePath("OrderDetail.txt"));
     billRepository = make_unique<FileBillRepository>(dataFolder.filePath("Bill.txt"));
-    checkoutService = make_unique<CheckoutService>(*orderRepository, *billRepository);
+    checkoutService = make_unique<CheckoutService>(*orderRepository, *billRepository, *productCatalog);
 
     QString problemDescription;
     const bool productsLoaded = productCatalog->reload(problemDescription);
@@ -85,7 +89,8 @@ void MainWindow::createScreens()
     connect(dataFolderButton, &QPushButton::clicked, this, [this] { changeDataFolder(); });
 }
 
-void MainWindow::applyRole(){
+void MainWindow::applyRole()
+{
     stopAllScanning();
     const bool roleIsCashier = roleComboBox->currentText() == cashierRoleName;
 
@@ -93,20 +98,25 @@ void MainWindow::applyRole(){
     tabWidget->setTabVisible(productInfoTabIndex, true);
     tabWidget->setTabVisible(barcodeGeneratorTabIndex, !roleIsCashier);
 
-    if (roleIsCashier)
+    if (roleIsCashier) {
         tabWidget->setCurrentIndex(orderTabIndex);
-    else
+    } else {
+        barcodeGeneratorScreen->reloadProducts();
         tabWidget->setCurrentIndex(productInfoTabIndex);
+    }
 }
 
-void MainWindow::stopAllScanning(){
+void MainWindow::stopAllScanning()
+{
     orderScreen->stopScanning();
     productInfoScreen->stopScanning();
 }
 
-void MainWindow::changeDataFolder(){
+void MainWindow::changeDataFolder()
+{
     const QString chosenFolder = DataFolderLocator::askForDataFolder(this);
     if (chosenFolder.isEmpty())
         return;
-    QMessageBox::information(this, "Data folder","The new data folder will be used the next time you start the application.");
+    QMessageBox::information(this, "Data folder",
+                             "The new data folder will be used the next time you start the application.");
 }
