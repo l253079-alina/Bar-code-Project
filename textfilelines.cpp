@@ -1,6 +1,7 @@
 #include "textfilelines.h"
 
 #include <QFile>
+#include <QSaveFile>
 #include <QTextStream>
 
 QStringList TextFileLines::readNonEmptyLines(const QString& filePath)
@@ -29,7 +30,27 @@ bool TextFileLines::appendLines(const QString& filePath, const QStringList& line
 
     QTextStream fileStream(&file);
     for (const QString& line : lines)
-        fileStream << line << endl;
+        fileStream << line << Qt::endl;
+    return true;
+}
+
+bool TextFileLines::writeAllLines(const QString& filePath, const QStringList& lines, QString& problemDescription)
+{
+    QSaveFile file(filePath);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        problemDescription = "Could not write to " + filePath;
+        return false;
+    }
+
+    QTextStream fileStream(&file);
+    for (const QString& line : lines)
+        fileStream << line << Qt::endl;
+    fileStream.flush();
+
+    if (!file.commit()) {
+        problemDescription = "Could not save " + filePath;
+        return false;
+    }
     return true;
 }
 
