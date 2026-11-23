@@ -14,4 +14,15 @@ namespace OrderConstants {
 
     inline const QString measurementUnitCount = "count";
     inline const QString measurementUnitWeight = "weight";
+
+    inline const QString dateFormat = "yyyy-MM-dd";
+    inline const QString timeFormat = "HH:mm:ss";
+
+    inline const int paidOrderEditWindowDays = 7;
+    inline const double maximumSpecialDiscountPercent = 8.0;
+
+    inline bool isCompletedStatus(const QString& status)
+    {
+        return status == statusPaid || status == statusArchived;
+    }
 }

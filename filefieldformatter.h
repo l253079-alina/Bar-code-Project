@@ -6,7 +6,9 @@
 class FileFieldFormatter {
 public:
     static QString text(const QString& value);
+    static QString restoreText(const QString& storedValue);
     static QString money(double amount);
     static QString quantity(double quantityValue);
     static QString lineWithEndMarker(const QStringList& fields);
+    static QStringList fieldsOfLine(const QString& line);
 };

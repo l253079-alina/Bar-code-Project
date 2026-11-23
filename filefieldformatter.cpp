@@ -12,6 +12,16 @@ QString FileFieldFormatter::text(const QString& value)
     return cleanedValue;
 }
 
+QString FileFieldFormatter::restoreText(const QString& storedValue)
+{
+    if (storedValue == "-")
+        return QString();
+
+    QString restoredValue = storedValue;
+    restoredValue.replace(QChar('_'), QChar(' '));
+    return restoredValue;
+}
+
 QString FileFieldFormatter::money(double amount)
 {
     return QString::number(amount, 'f', 2);
@@ -25,4 +35,12 @@ QString FileFieldFormatter::quantity(double quantityValue)
 QString FileFieldFormatter::lineWithEndMarker(const QStringList& fields)
 {
     return fields.join(QChar(' ')) + " #";
+}
+
+QStringList FileFieldFormatter::fieldsOfLine(const QString& line)
+{
+    QString lineWithoutEndMarker = line.trimmed();
+    if (lineWithoutEndMarker.endsWith('#'))
+        lineWithoutEndMarker.chop(1);
+    return lineWithoutEndMarker.trimmed().split(' ', Qt::SkipEmptyParts);
 }
