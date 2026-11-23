@@ -1,12 +1,15 @@
 #pragma once
-#include "billrepository.h"
+#include "productrepository.h"
+#include <QStringList>
 
-class FileBillRepository : public BillRepository {
+class FileProductRepository : public ProductRepository 
+{
 public:
-    explicit FileBillRepository(const QString& billFilePathToUse): billFilePath(billFilePathToUse) {}
-    QString createNextBillId() override;
-    bool saveBill(const Bill& bill, QString& problemDescription) override;
+    explicit FileProductRepository(const QString& productFilePathToRead);
+    bool loadProducts(vector<Product>& products, QString& problemDescription) override;
+    bool saveProducts(const vector<Product>& products, QString& problemDescription) override;
 
 private:
-    QString billFilePath;
+    QString productFilePath;
+    QStringList unreadableLines;
 };
