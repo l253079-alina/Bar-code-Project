@@ -1,5 +1,4 @@
 #pragma once
-
 #include "product.h"
 #include "standardnames.h"
 #include <QString>
