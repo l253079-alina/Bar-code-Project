@@ -4,6 +4,7 @@
 struct Product {
     QString productId;
     QString barcode;
+    QString categoryId;
     QString acronym;
     QString name;
     QString measurementUnit;
