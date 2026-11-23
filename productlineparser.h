@@ -1,7 +1,5 @@
 #pragma once
-
 #include "product.h"
-
 #include <QString>
 #include <QStringList>
 
@@ -12,4 +10,5 @@ public:
 private:
     static bool isMeasurementUnit(const QString& token);
     static bool areAllNumbers(const QStringList& tokens, int firstTokenIndex, int tokenCount);
+    static bool hasCategoryToken(const QStringList& tokens);
 };
