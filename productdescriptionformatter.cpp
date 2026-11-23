@@ -7,6 +7,7 @@ QString ProductDescriptionFormatter::describe(const Product& product)
     QStringList lines;
     lines << "Product ID: " + product.productId;
     lines << "Barcode: " + product.barcode;
+    lines << "Category ID: " + product.categoryId;
     lines << "Acronym: " + product.acronym;
     lines << "Name: " + product.name;
     lines << "Measurement unit: " + product.measurementUnit;
