@@ -1,6 +1,6 @@
 # BarcodeSix Point of Sale
 
-Welcome! BarcodeSix is a small point-of-sale app that makes checkout feel easy. The cashier points the camera at a product's barcode, the item lands in the order, and a bill is created and saved, with no typing needed.
+BarcodeSix is a small point-of-sale app that makes checkout feel easy. The cashier points the camera at a product's barcode, the item lands in the order, and a bill is created and saved, with no typing needed.
 
 We chose to keep the Code 128 barcode code we wrote ourselves back in increment 1. Qt only handles the windows, the camera and the drawing.
 
