@@ -13,6 +13,15 @@ add_executable(barcode_six
     mainwindow.h
     standardnames.h
     orderconstants.h
+    orderdetailrecord.h
+    existingorderinfo.h
+    orderreader.h
+    orderrecordparser.cpp
+    orderrecordparser.h
+    heldorderservice.cpp
+    heldorderservice.h
+    heldordersdialog.cpp
+    heldordersdialog.h
     product.h
     productlineparser.cpp
     productlineparser.h
@@ -67,5 +76,40 @@ add_executable(barcode_six
     code128patterns.h
     code128encoder.h
     code128decoder.h
+    category.h
+    categoryrepository.h
+    filecategoryrepository.cpp
+    filecategoryrepository.h
+    categorycatalog.cpp
+    categorycatalog.h
+    season.h
+    seasonrepository.h
+    fileseasonrepository.cpp
+    fileseasonrepository.h
+    seasoncatalog.cpp
+    seasoncatalog.h
+    productrecordformatter.cpp
+    productrecordformatter.h
+    billrecordparser.cpp
+    billrecordparser.h
+    billpdfwriter.cpp
+    billpdfwriter.h
+    managerapprovalservice.cpp
+    managerapprovalservice.h
+    reportservice.cpp
+    reportservice.h
+    categoryscreen.cpp
+    categoryscreen.h
+    productdialog.cpp
+    productdialog.h
+    productmanagementscreen.cpp
+    productmanagementscreen.h
+    seasonscreen.cpp
+    seasonscreen.h
+    billsscreen.cpp
+    billsscreen.h
+    reportsscreen.cpp
+    reportsscreen.h
 )
 target_link_libraries(barcode_six PRIVATE Qt6::Widgets Qt6::Multimedia)
+
