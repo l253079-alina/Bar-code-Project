@@ -15,7 +15,6 @@ We chose to keep the Code 128 barcode code we wrote ourselves back in increment 
 | 4 | `mainwindow.h/.cpp`, `orderscreen.h/.cpp`, `billdialog.h/.cpp`, `heldordersdialog.h/.cpp` |
 | 5 | `camerascanner.h/.cpp`, `main.cpp`, `CMakeLists.txt`, `README.md`, `.gitignore`, `standardnames.h`, `scanpanel.h/.cpp`, `productinfoscreen.h/.cpp`, `checkoutdialog.h/.cpp`, `datafolderlocator.h/.cpp`, `SampleData/` |
 
-**Merge order:** Members 1, 2 and 3 go first, then Members 4 and 5, and the `CMakeLists.txt` change is merged last. Don't worry if the project doesn't build halfway through. It builds once every pull request is in.
 
 ## How the pieces work together
 
