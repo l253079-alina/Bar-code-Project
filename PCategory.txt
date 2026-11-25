@@ -1,0 +1,5 @@
+11 Beverages BEV #
+12 Snacks SNK #
+13 Dairy DRY #
+76 Confectionary CNF #
+10 Daily_Essentials DE #
