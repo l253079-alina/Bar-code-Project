@@ -5,6 +5,10 @@
 #include <QMediaDevices>
 #include <QVideoFrame>
 
+static const int minimumMillisecondsBetweenDecodes = 120;
+static const int sameResultsRequiredToConfirm = 2;
+static const int sameBarcodeAbsenceMilliseconds = 1500;
+
 CameraScanner::CameraScanner(QObject *parent) : QObject(parent) {}
 
 bool CameraScanner::start()
@@ -23,28 +27,45 @@ bool CameraScanner::start()
     throttle.start();
     pendingText.clear();
     pendingCount = 0;
+    hasConfirmedText = false;
+    lastSeenTimer.start();
 
     connect(sink, &QVideoSink::videoFrameChanged, this, [this](const QVideoFrame &frame) {
         if (!frame.isValid())
             return;
-        const QImage img = frame.toImage();
-        if (img.isNull())
+        const QImage frameImage = frame.toImage();
+        if (frameImage.isNull())
             return;
-        emit frameReady(img);
-        if (throttle.elapsed() < 120)          // decode ~8 times per second
+        emit frameReady(frameImage);
+        if (throttle.elapsed() < minimumMillisecondsBetweenDecodes)
             return;
         throttle.restart();
 
-        if (auto text = decodeBarcode(img)) {
-            if (*text == pendingText)
+        if (auto barcodeText = decodeBarcode(frameImage)) {
+            const bool isRepeatOfConfirmed = hasConfirmedText && *barcodeText == lastConfirmedText;
+            if (isRepeatOfConfirmed) {
+                const bool wasAbsentLongEnough = lastSeenTimer.elapsed() >= sameBarcodeAbsenceMilliseconds;
+                lastSeenTimer.restart();
+                if (!wasAbsentLongEnough) {
+                    pendingText.clear();
+                    pendingCount = 0;
+                    return;
+                }
+            }
+
+            if (*barcodeText == pendingText)
                 pendingCount = pendingCount + 1;
             else
                 pendingCount = 1;
-            pendingText = *text;
-            if (pendingCount >= 2) {          
-                const QString found = *text;
-                emit barcodeFound(found);
-                stop();
+            pendingText = *barcodeText;
+            if (pendingCount >= sameResultsRequiredToConfirm) {
+                const QString confirmedText = *barcodeText;
+                lastConfirmedText = confirmedText;
+                hasConfirmedText = true;
+                lastSeenTimer.restart();
+                pendingText.clear();
+                pendingCount = 0;
+                emit barcodeFound(confirmedText);
             }
         }
     });
