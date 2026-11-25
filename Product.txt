@@ -1,0 +1,6 @@
+1 100001 10 RICE Basmati Rice weight 320.00 16.00 10.00 43.5 Barcodes/100001.png #
+2 100002 10 SUGAR Sugar weight 150.00 7.50 0.00 40 Barcodes/100002.png #
+3 100003 10 MILK Milk Pack count 280.00 14.00 5.00 21 Barcodes/100003.png #
+4 100004 10 TEABAG Tea Bags count 450.00 22.50 20.00 12 Barcodes/100004.png #
+5 100005 10 SOAP Lux Soap count 120.00 6.00 0.00 3 Barcodes/100005.png #
+6 110001 11 CC Coca cola count 200.00 10.00 2.00 100 Barcodes/110001.png #
