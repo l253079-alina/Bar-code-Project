@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include <QCamera>
@@ -30,6 +29,9 @@ private:
     QVideoSink *sink = nullptr;
     QMediaCaptureSession session;
     QElapsedTimer throttle;
-    QString pendingText;   
+    QString pendingText;
     int pendingCount = 0;
+    QString lastConfirmedText;
+    bool hasConfirmedText = false;
+    QElapsedTimer lastSeenTimer;
 };
