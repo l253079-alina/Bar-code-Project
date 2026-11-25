@@ -6,7 +6,6 @@ We chose to keep the Code 128 barcode code we wrote ourselves back in increment 
 
 ## Who looks after what
 
-To keep merges painless, please stick to your own files. If you need a change somewhere else, just ask the person who owns it.
 
 | Member | Files |
 |---|---|
